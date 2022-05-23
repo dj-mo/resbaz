@@ -116,7 +116,24 @@ all <- ts(data = data.frame(noise, lag, lag_trend, seasonal, seasonal_trend),
 
 plot(all)
 lag.plot(all, set.lags = c(1, 3, 6, 9))
+
+# Autocorrelation
 acf(all[,'noise'], xlab = 'Lag (years), noise')
 acf(all[,'lag'], xlab = 'Lag (years), lag 1')
 acf(all[,'lag'], xlab = 'Lag (years), lag 1 and trend')
 acf(all[,'seasonal'], xlab = 'Lag (years), seasonal')
+
+# Time Series Decomposition
+dec <- decompose(all[,'seasonal_trend'])
+
+plot(dec)
+
+plot(dec$trend)
+
+# Can apply smoothing aka Seasonal Trend w/ local smoothing Loess (STL)
+seasonal_stl <- stl(all[,'seasonal_trend'], s.window = 6)
+plot(seasonal_stl)
+
+## note how you can access each component of the decomposed time series 
+## plot(seasonal_stl$time.series[,c('trend', 'seasonal', 'remainder')])
+
