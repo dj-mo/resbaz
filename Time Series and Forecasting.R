@@ -1,3 +1,5 @@
+# https://viz.datascience.arizona.edu/2021-time-series-intro/time-series-forecasting.html
+
 # libraries:
 library(forecast)
 library(dplyr)
@@ -137,3 +139,22 @@ plot(seasonal_stl)
 ## note how you can access each component of the decomposed time series 
 ## plot(seasonal_stl$time.series[,c('trend', 'seasonal', 'remainder')])
 
+dec_months <- months[1:length(dec$trend)]
+tidy(lm(dec$trend ~ dec_months))
+
+plot(dec$trend)
+
+seasonal_stl <- stl(all[,'seasonal_trend'], s.window = 6)
+plot(seasonal_stl)
+
+fit <- lm(seasonal_stl$time.series[,'trend'] ~ dec_months)
+coef(fit)
+
+# Forecasting
+ts_fit <- tslm(all[,'seasonal_trend'] ~ trend + season)
+tidy(ts_fit)
+
+plot(forecast(ts_fit, h = 20))
+
+auto_fit <- auto.arima(all[,'seasonal_trend'])
+summary(auto_fit)
