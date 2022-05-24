@@ -33,8 +33,8 @@ adjacency # head(...)  shows the first rows of a dataset
 # -----------------------
 
 # Transform the data into network format 
-karate_net <- network(adjacency, matrix.type = "adjacency",
-                      directed = T, ignore.eval = T, loops = T, multiple = T)
+karate_net <- network(adjacency, matrix.type = "adjacency", 
+                      directed = TRUE, ignore.eval = TRUE, loops = FALSE, multiple = TRUE)
 
 # Look at the network object 
 karate_net
