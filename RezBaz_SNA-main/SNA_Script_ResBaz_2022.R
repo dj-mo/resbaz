@@ -19,6 +19,7 @@
 # Please do NOT load igraph yet.
 library(statnet)
 library(GGally)
+library(igraph)
 
 
 # Read the adjacency matrix  
@@ -38,6 +39,8 @@ adjacency # head(...)  shows the first rows of a dataset
 # Get a network object
 # -----------------------
 
+graph_karate_net <- graph_from_adjacency_matrix(as.matrix(adjacency))
+
 # Transform the data into network format 
 karate_net <- network(adjacency, matrix.type = "adjacency", 
                       directed = TRUE, ignore.eval = TRUE, loops = FALSE, multiple = TRUE)
@@ -46,33 +49,36 @@ karate_net <- network(adjacency, matrix.type = "adjacency",
 karate_net
 
 
-# Look at the network object 
-
-
-
 # -----------------------
 # Visualize the network
 # -----------------------
+install.packages("intergraph")
+library(intergraph)
 
 # Simple visualization 
 # ?ggnet2
+ggnet2(graph_karate_net, label = TRUE)
 
 # Add some color
-
+ggnet2(net = graph_karate_net, label = TRUE, node.color = "coral2") #"blue", "green"
 #### Back to presentation ####
 
 # -------------------------------
 # Explore the network structure
 # -------------------------------
 
+
 # Save names of club members 
+# <- network.vertex.names(graph_karate_net)
 
 # Get components - how many clusters do we have?
+components(graph_karate_net)
 
 # Find isolates
-
+#isolate <- isolates(graph_karate_net)
 
 # Get densitiy
+#gden(graph_karate_net)
 
 # -------------------------
 # Explore actor positions
@@ -80,9 +86,11 @@ karate_net
 
 
 # Get degree centrality
-
+degree <- degree(graph_karate_net)
+sort(degree)
 
 # Explore degree distribution
+hist(degree, breaks = 12, main = "Degree Distribution", xlab = "Degree")
 
 # Get eigenvector centrality
 #####
@@ -92,12 +100,14 @@ karate_net
 # connected to many nodes who themselves have high scores.
 ####
 
+eigen <- evcent(graph_karate_net)
+
 
 # Get Closness centrality
-
+close <- closeness(graph_karate_net)
 
 # Get betweenness centrality
-
+between <- betweenness(graph_karate_net)
 
 
 #### Back to presentation ####
@@ -117,25 +127,32 @@ karate_net
 # names.Therefore, we will access igraph using the "::" method. 
 
 # Get the matrix (matrix is another object type, like network object)
+adj_matrix <- as.matrix(adjacency)
 
 # Get igraph object (this is another type of network object)
-
+karate_inet <- simplify(adj_matrix)
+  
 # Simplify igraph object
 
 
 # Look at the igraph object
+graph_karate_net
 
-# igraph::V(karate_inet)	# This shows you the vertex set. 
-# igraph::E(karate_inet)	# This shows you the edge set. 
+igraph::V(graph_karate_net)	# This shows you the vertex set. 
+igraph::E(graph_karate_net)	# This shows you the edge set. 
 
 # Plot the network
+plot.igraph(graph_karate_net, vertex.size = 10, vertex.label.cex = .5)
 
 # -----------------------
 # Find cliques
 # -----------------------
 
 # Find all cliques with a minimum of three members
+cliq <- cliques(graph_karate_net, min = 3) 
+
 # Number of cliques of size 3.  
+length(cliq)
 
 # Find all cliques with a minimum of four members
 # Number of cliques of size 4.  
@@ -148,10 +165,11 @@ karate_net
 # -----------------------
 
 # Use the Girvan-Newman approach to detect communities
-
+community <- edge.betweenness.community(graph_karate_net)
+plot_dendrogram(community)
 
 # Visualize the network with colors according to communities
-
+plot.igraph(graph_karate_net, vertex.color = community$membership, vertex.size = 12, vertex.label.cex = .5)
 
 # ----------------------------
 # Visualize node attributes
