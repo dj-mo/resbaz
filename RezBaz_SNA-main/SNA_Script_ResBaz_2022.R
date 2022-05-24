@@ -33,6 +33,7 @@ adjacency # head(...)  shows the first rows of a dataset
 # head(...)  shows the first rows of a dataset
 
 
+
 # -----------------------
 # Get a network object
 # -----------------------
@@ -43,12 +44,11 @@ karate_net <- network(adjacency, matrix.type = "adjacency",
 
 # Look at the network object 
 karate_net
-=======
 
 
 # Look at the network object 
 
->>>>>>> 17195f0ac2c9fe09678e961a78ffab25a74050b9
+
 
 # -----------------------
 # Visualize the network
