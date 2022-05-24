@@ -22,24 +22,22 @@ library(GGally)
 
 
 # Read the adjacency matrix  
-<<<<<<< HEAD
 adjacency <- read.csv("RezBaz_SNA-main/Karate club adj 2021_05_21.csv",
                       header = T, stringsAsFactors = F, row.names = 1)
 
 # Inspect the data 
 adjacency # head(...)  shows the first rows of a dataset
-=======
+
 
 # Inspect the data 
 # head(...)  shows the first rows of a dataset
->>>>>>> 17195f0ac2c9fe09678e961a78ffab25a74050b9
+
 
 # -----------------------
 # Get a network object
 # -----------------------
 
 # Transform the data into network format 
-<<<<<<< HEAD
 karate_net <- network(adjacency, matrix.type = "adjacency", 
                       directed = TRUE, ignore.eval = TRUE, loops = FALSE, multiple = TRUE)
 
